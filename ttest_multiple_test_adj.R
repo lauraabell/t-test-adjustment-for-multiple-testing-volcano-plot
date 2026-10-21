@@ -11,9 +11,9 @@ library(broom)
 library(ggplot2)
 
 #paired t test for one protein
-paired_data <- assay_df %>% 
-  select(Experiment, Sample, ABI3BP) %>%
-  pivot_wider( names_from = Sample,values_from = ABI3BP ) %>% 
+paired_data <- df %>% 
+  select(Experiment, Sample, Nameofprotein) %>%
+  pivot_wider( names_from = Sample,values_from = Nameofprotein ) %>% 
   drop_na(Control, Treatment) 
 
 paired_t_test <- t.test( paired_data$Treatment,paired_data$Control, 
@@ -27,6 +27,7 @@ result
 confidence_interval <- paired_t_test$conf.int
 confidence_interval
 
+##removing controls from olink data
 assay_df_final <- assay_df[,-c("Extension control", "Incubation control", "Amplification control")]
 assay_df_final <- subset(assay_df, 
                          select = -c(`Extension control`,`Incubation control`, `Amplification control`))
@@ -144,7 +145,7 @@ volcano_df <- volcano_df |>
   )
 
 #creating vector of proteins i want labelled
-prot <- c("LPO", "PTPRN2", "BANK1")  
+prot <- c("protein1", "protein2", "protein3")  
 
 #making a volcano plot
 volcano_df |> 
